@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class MainController {
 
     @Autowired
@@ -31,23 +32,23 @@ public class MainController {
         return ResponseEntity.ok().body(workout);
     }
 
-    @PostMapping
+    @PostMapping("/workouts")
     public void addWorkout(@RequestBody Workout workout){
 
         workoutRepository.save(workout);
     }
 
-    @PutMapping
+    @PutMapping("/workouts")
     public void updateWorkout(@RequestBody Workout workout){
 
         workoutRepository.save(workout);
     }
 
-    @PostMapping
-    public void deleteWorkout(@PathVariable(value = "id")int id){
-
-        workoutRepository.deleteById(id);
-    }
+//    @PostMapping
+//    public void deleteWorkout(@PathVariable(value = "id")int id){
+//
+//        workoutRepository.deleteById(id);
+//    }
 
     @GetMapping("/categories")
     public List<Category> getCategories(){
@@ -60,22 +61,22 @@ public class MainController {
         return ResponseEntity.ok().body(category);
     }
 
-    @PostMapping
+    @PostMapping("/categories")
     public void addCategory(@RequestBody Category category){
 
         categoryRepository.save(category);
     }
 
-    @PutMapping
+    @PutMapping("/categories")
     public void updateCategory(@RequestBody Category category){
 
         categoryRepository.save(category);
     }
 
-    @PostMapping
-    public void deleteCategory(@PathVariable(value = "id")int id){
-
-        categoryRepository.deleteById(id);
-    }
+//    @PostMapping
+//    public void deleteCategory(@PathVariable(value = "id")int id){
+//
+//        categoryRepository.deleteById(id);
+//    }
 
 }

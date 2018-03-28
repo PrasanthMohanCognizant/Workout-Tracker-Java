@@ -26,6 +26,12 @@ public class MainController {
         return workoutRepository.findAll();
     }
 
+
+    @GetMapping("/workouts/search")
+    public List<Workout> searchWorkouts(@RequestParam(value = "title")String title){
+        return workoutRepository.findByTitle(title);
+    }
+
     @GetMapping("/workouts/{id}")
     public ResponseEntity<Workout> getWorkout(@PathVariable(value = "id")int id){
         Workout workout = workoutRepository.getOne(id);

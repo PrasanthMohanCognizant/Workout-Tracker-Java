@@ -50,11 +50,11 @@ public class MainController {
         workoutRepository.save(workout);
     }
 
-//    @PostMapping
-//    public void deleteWorkout(@PathVariable(value = "id")int id){
-//
-//        workoutRepository.deleteById(id);
-//    }
+    @DeleteMapping("/workouts/{id}")
+    public void deleteWorkout(@PathVariable(value = "id")int id){
+
+        workoutRepository.deleteById(id);
+    }
 
     @GetMapping("/categories")
     public List<Category> getCategories(){
@@ -79,10 +79,10 @@ public class MainController {
         categoryRepository.save(category);
     }
 
-//    @PostMapping
-//    public void deleteCategory(@PathVariable(value = "id")int id){
-//
-//        categoryRepository.deleteById(id);
-//    }
+    @DeleteMapping("/categories/{id}")
+    public void deleteCategory(@PathVariable(value = "id")int id){
+
+        categoryRepository.deleteById(id);
+    }
 
 }

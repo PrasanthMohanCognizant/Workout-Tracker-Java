@@ -23,12 +23,16 @@ public class Workout implements Serializable{
 
     private int category_id;
 
+    @Temporal(value = TemporalType.DATE)
     private Date start_time;
 
+    @Temporal(value = TemporalType.DATE)
     private Date start_date;
 
+    @Temporal(value = TemporalType.DATE)
     private Date end_date;
 
+    @Temporal(value = TemporalType.DATE)
     private Date end_time;
 
     private String comment;

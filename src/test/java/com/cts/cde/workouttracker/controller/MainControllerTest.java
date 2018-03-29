@@ -4,6 +4,7 @@ import com.cts.cde.workouttracker.model.Category;
 import com.cts.cde.workouttracker.model.Workout;
 import com.cts.cde.workouttracker.repository.CategoryRepository;
 import com.cts.cde.workouttracker.repository.WorkoutRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.doNothing;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.*;
@@ -88,16 +94,39 @@ public class MainControllerTest {
                 .andExpect(jsonPath("$[1].id", is(2)));
     }
 
-//    @Test
-//    public void addWorkoutTest() throws Exception{
-//        Workout workout = new Workout();
-//        workout.setId(1);
-//
-//        given(workoutRepository.save(workout)).willReturn(workout);
-//
-//        mockMvc.perform(post("/api/workouts").param("id","1").accept(MediaType.APPLICATION_JSON_VALUE))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    public void addWorkoutTest() throws Exception{
+        Workout workout = new Workout();
+        workout.setId(1);
+
+        given(workoutRepository.save(workout)).willReturn(workout);
+
+        mockMvc.perform(post("/api/workouts").contentType(MediaType.APPLICATION_JSON).content(asJsonString(workout)).accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateWorkoutTest() throws Exception{
+        Workout workout = new Workout();
+        workout.setId(1);
+
+        given(workoutRepository.save(workout)).willReturn(workout);
+
+        mockMvc.perform(put("/api/workouts").contentType(MediaType.APPLICATION_JSON).content(asJsonString(workout)).accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteWorkoutTest() throws Exception{
+
+        Workout workout = new Workout();
+        workout.setId(1);
+
+        doNothing().when(workoutRepository).deleteById(1);
+
+        mockMvc.perform(delete("/api/workouts/1").accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
 
     @Test
     public void getCategoriesTest() throws Exception{
@@ -131,6 +160,44 @@ public class MainControllerTest {
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
+    @Test
+    public void addCategoryTest() throws Exception{
+        Category category = new Category();
+        category.setId(1);
 
+        given(categoryRepository.save(category)).willReturn(category);
+
+        mockMvc.perform(post("/api/categories").contentType(MediaType.APPLICATION_JSON).content(asJsonString(category)).accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateCategoryTest() throws Exception{
+        Category category = new Category();
+        category.setId(1);
+
+        given(categoryRepository.save(category)).willReturn(category);
+
+        mockMvc.perform(put("/api/categories").contentType(MediaType.APPLICATION_JSON).content(asJsonString(category)).accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteCategoryTest() throws Exception{
+
+        doNothing().when(categoryRepository).deleteById(1);
+
+        mockMvc.perform(delete("/api/categories/1").accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
